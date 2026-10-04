@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"id": "nounusedchunks",
+	"version": "${version}",
+	"name": "No Unused Chunks",
+	"description": "Safely removes chunks below a configurable InhabitedTime threshold.",
+	"authors": ["TheCSDev", "billnotfound"],
+	"contact": {
+		"homepage": "https://github.com/TheCSDev/nounusedchunks",
+		"sources": "https://github.com/billnotfound/nounusedchunks",
+		"issues": "https://github.com/billnotfound/nounusedchunks/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/nounusedchunks/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["io.github.thecsdev.nounusedchunks.NoUnusedChunks"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
