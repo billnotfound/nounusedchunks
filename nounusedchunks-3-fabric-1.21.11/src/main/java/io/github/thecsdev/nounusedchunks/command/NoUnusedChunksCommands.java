@@ -3,13 +3,13 @@ package io.github.thecsdev.nounusedchunks.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.thecsdev.nounusedchunks.cleanup.CleanupJob;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.level.storage.LevelResource;
@@ -37,7 +37,7 @@ public final class NoUnusedChunksCommands {
 		dispatcher.register(Commands.literal("nounusedchunks")
 				.requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
 				.then(Commands.literal("schedule")
-						.then(Commands.argument("dimension", StringArgumentType.word())
+						.then(Commands.argument("dimension", IdentifierArgument.id())
 								.suggests((context, builder) -> SharedSuggestionProvider.suggest(
 										Stream.concat(
 												Stream.of("all"),
@@ -66,12 +66,12 @@ public final class NoUnusedChunksCommands {
 
 	private static int schedule(CommandContext<CommandSourceStack> context, long maxInhabitedTime, int threads) {
 		CommandSourceStack source = context.getSource();
-		String requestedDimension = StringArgumentType.getString(context, "dimension");
+		String requestedDimension = IdentifierArgument.getId(context, "dimension").toString();
 		Set<String> loadedDimensions = new LinkedHashSet<>();
 		source.getServer().getAllLevels().forEach(level -> loadedDimensions.add(level.dimension().identifier().toString()));
 
 		Set<String> selectedDimensions;
-		if (requestedDimension.equals("all")) {
+		if (requestedDimension.equals("minecraft:all")) {
 			selectedDimensions = loadedDimensions;
 		} else if (loadedDimensions.contains(requestedDimension)) {
 			selectedDimensions = Set.of(requestedDimension);
